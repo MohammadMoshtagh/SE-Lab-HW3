@@ -2,6 +2,7 @@ package ir.selab.tdd.repository;
 
 import ir.selab.tdd.domain.User;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,16 @@ public class UserRepository {
                 .collect(Collectors.toMap(User::getEmail, u -> u, (u1, u2) -> {
                     throw new IllegalArgumentException("Two users can not have the same email!");
                 }));
+    }
+
+    public List<User> getAllUsers() {
+        Map<String, User> combinedUsers = new HashMap<>(usersByUserName);
+
+        for (Map.Entry<String, User> entry : usersByEmail.entrySet()) {
+            combinedUsers.putIfAbsent(entry.getKey(), entry.getValue());
+        }
+
+        return new ArrayList<>(combinedUsers.values());
     }
 
     public User getUserByUsername(String username) {
