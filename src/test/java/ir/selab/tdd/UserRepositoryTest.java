@@ -92,14 +92,40 @@ public class UserRepositoryTest {
     }
 
     @Test
+    public void removeExistingUser_ShouldDecreaseUserCount() {
+        String username = "ali";
+        int initialCount = repository.getUserCount();
+
+        boolean removed = repository.removeUser(username);
+
+        assertTrue(removed);
+        assertEquals(initialCount - 1, repository.getUserCount());
+        assertNull(repository.getUserByUsername(username));
+    }
+
+    @Test
     public void removeUser_ShouldOnlyRemoveSpecifiedUser() {
         String usernameToRemove = "admin";
         String otherUsername = "ali";
+        int initialCount = repository.getUserCount();
 
-        repository.removeUser(usernameToRemove);
+        boolean removed = repository.removeUser(usernameToRemove);
 
+        assertTrue(removed);
+        assertEquals(initialCount - 1, repository.getUserCount());
         assertNull(repository.getUserByUsername(usernameToRemove));
         assertNotNull(repository.getUserByUsername(otherUsername));
+    }
+
+    @Test
+    public void getAllUsers_ShouldReturnAllUniqueUsers() {
+        List<User> users = repository.getAllUsers();
+
+        assertNotNull(users);
+        assertEquals(3, users.size());
+        assertTrue(users.stream().anyMatch(user -> user.getUsername().equals("admin")));
+        assertTrue(users.stream().anyMatch(user -> user.getUsername().equals("ali")));
+        assertTrue(users.stream().anyMatch(user -> user.getUsername().equals("mohammad")));
     }
 
 }
