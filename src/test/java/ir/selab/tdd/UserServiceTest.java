@@ -88,4 +88,10 @@ public class UserServiceTest {
         boolean changed = userService.changeUserEmail("asghar", "asgharagha@gmail.com");
         assertTrue(changed);
     }
+
+    @Test
+    public void changeUserEmailWithInvalidEmail__ShouldFail() {
+        boolean changed = userService.changeUserEmail("mashti@gmail.com", "mashti1@gmail.com");
+        assertFalse(changed);
+    }
 }
