@@ -19,6 +19,7 @@ public class UserServiceTest {
         userService.registerUser("admin", "1234");
         userService.registerUser("ali", "qwert");
         userService.registerUser("hasti", "123456", "hasti@gmail.com");
+        userService.registerUser("asghar", "rand", "asghar@gmail.com");
     }
 
     @Test
@@ -80,5 +81,11 @@ public class UserServiceTest {
     public void loginWithInvalidEmailAndInvalidPassword__ShouldFail() {
         boolean login = userService.loginWithEmail("hasti@g.c", "123456");
         assertFalse(login);
+    }
+
+    @Test
+    public void changeUserEmailWithValidUsername__ShouldSuccess() {
+        boolean changed = userService.changeUserEmail("asghar@gmail.com", "asgharagha@gmail.com");
+        assertTrue(changed);
     }
 }
