@@ -54,10 +54,16 @@ public class UserRepository {
     }
 
     public boolean removeUser(String username) {
-        if (!usersByUserName.containsKey(username)) {
+        User user = usersByUserName.remove(username);
+
+        if (user == null) {
             return false;
         }
-        usersByUserName.remove(username);
+
+        if (user.getEmail() != null) {
+            usersByEmail.remove(user.getEmail());
+        }
+
         return true;
     }
 
