@@ -85,7 +85,7 @@ public class UserServiceTest {
 
     @Test
     public void changeUserEmailWithValidUsername__ShouldSuccess() {
-        boolean changed = userService.changeUserEmail("asghar@gmail.com", "asgharagha@gmail.com");
+        boolean changed = userService.changeUserEmail("asghar", "asgharagha@gmail.com");
         assertTrue(changed);
     }
 }
