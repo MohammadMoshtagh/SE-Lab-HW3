@@ -1,6 +1,5 @@
 package ir.selab.tdd;
 
-import ir.selab.tdd.domain.User;
 import ir.selab.tdd.repository.UserRepository;
 import ir.selab.tdd.service.UserService;
 import org.junit.Before;
@@ -19,6 +18,8 @@ public class UserServiceTest {
         userService = new UserService(userRepository);
         userService.registerUser("admin", "1234");
         userService.registerUser("ali", "qwert");
+        userService.registerUser("hasti", "123456", "hasti@gmail.com");
+        userService.registerUser("asghar", "rand", "asghar@gmail.com");
     }
 
     @Test
@@ -26,6 +27,15 @@ public class UserServiceTest {
         String username = "reza";
         String password = "123abc";
         boolean b = userService.registerUser(username, password);
+        assertTrue(b);
+    }
+
+    @Test
+    public void createNewValidUserWithEmail__ShouldSuccess() {
+        String username = "rodjer";
+        String password = "123";
+        String email = "ro@gmail.com";
+        boolean b = userService.registerUser(username, password, email);
         assertTrue(b);
     }
 
@@ -53,5 +63,41 @@ public class UserServiceTest {
     public void loginWithInvalidUsernameAndInvalidPassword__ShouldFail() {
         boolean login = userService.loginWithUsername("ahmad", "abcd");
         assertFalse(login);
+    }
+
+    @Test
+    public void loginWithValidEmailAndPassword__ShouldSuccess() {
+        boolean login = userService.loginWithEmail("hasti@gmail.com", "123456");
+        assertTrue(login);
+    }
+
+    @Test
+    public void loginWithValidEmailAndInvalidPassword__ShouldFail() {
+        boolean login = userService.loginWithEmail("hasti@gmail.com", "abcd");
+        assertFalse(login);
+    }
+
+    @Test
+    public void loginWithInvalidEmailAndInvalidPassword__ShouldFail() {
+        boolean login = userService.loginWithEmail("hasti@g.c", "123456");
+        assertFalse(login);
+    }
+
+    @Test
+    public void changeUserEmailWithValidUsername__ShouldSuccess() {
+        boolean changed = userService.changeUserEmail("asghar", "asgharagha@gmail.com");
+        assertTrue(changed);
+    }
+
+    @Test
+    public void changeUserEmailWithInvalidUsername__ShouldFail() {
+        boolean changed = userService.changeUserEmail("mashti", "mashti1@gmail.com");
+        assertFalse(changed);
+    }
+
+    @Test
+    public void changeUserEmailWithoutEmail__ShouldFail() {
+        boolean changed = userService.changeUserEmail("admin", "mashti1@gmail.com");
+        assertFalse(changed);
     }
 }
