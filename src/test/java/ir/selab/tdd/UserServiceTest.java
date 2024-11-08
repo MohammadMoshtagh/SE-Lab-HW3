@@ -1,6 +1,5 @@
 package ir.selab.tdd;
 
-import ir.selab.tdd.domain.User;
 import ir.selab.tdd.repository.UserRepository;
 import ir.selab.tdd.service.UserService;
 import org.junit.Before;
