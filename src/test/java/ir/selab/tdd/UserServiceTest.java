@@ -68,4 +68,16 @@ public class UserServiceTest {
         boolean login = userService.loginWithEmail("hasti@gmail.com", "123456");
         assertTrue(login);
     }
+
+    @Test
+    public void loginWithValidEmailAndInvalidPassword__ShouldFail() {
+        boolean login = userService.loginWithEmail("hasti@gmail.com", "abcd");
+        assertFalse(login);
+    }
+
+    @Test
+    public void loginWithInvalidEmailAndInvalidPassword__ShouldFail() {
+        boolean login = userService.loginWithEmail("hasti@g.c", "123456");
+        assertFalse(login);
+    }
 }
