@@ -18,7 +18,8 @@ public class UserRepositoryTest {
         List<User> userList = Arrays.asList(
                 new User("admin", "1234"),
                 new User("ali", "qwert"),
-                new User("mohammad", "123asd"));
+                new User("mohammad", "123asd"),
+                new User("trump", "1234", "trump@gmail.com"));
         repository = new UserRepository(userList);
     }
 
@@ -60,5 +61,12 @@ public class UserRepositoryTest {
 
         // Then
         assertEquals(oldUserCount + 1, repository.getUserCount());
+    }
+
+    @Test
+    public void createUserWithDuplicateEmail__ShouldFail() {
+        User user1 = new User("kamela", "loser", "trump@gmail.com");
+        boolean isAdded = repository.addUser(user1);
+        assertFalse(isAdded);
     }
 }
