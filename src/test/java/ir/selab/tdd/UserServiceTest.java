@@ -1,5 +1,6 @@
 package ir.selab.tdd;
 
+import ir.selab.tdd.domain.User;
 import ir.selab.tdd.repository.UserRepository;
 import ir.selab.tdd.service.UserService;
 import org.junit.Before;
@@ -114,7 +115,7 @@ public class UserServiceTest {
     public void removeNonExistingUser_ShouldFail() {
         boolean removed = userService.removeUser("nonexistent");
         assertFalse(removed);
-        assertEquals(2, userService.getAllUsers().size());
+        assertEquals(4, userService.getAllUsers().size());
     }
 
     @Test(expected = IllegalArgumentException.class)

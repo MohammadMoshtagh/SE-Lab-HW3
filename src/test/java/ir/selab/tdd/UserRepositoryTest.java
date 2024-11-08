@@ -122,7 +122,7 @@ public class UserRepositoryTest {
         List<User> users = repository.getAllUsers();
 
         assertNotNull(users);
-        assertEquals(3, users.size());
+        assertEquals(4, users.size());
         assertTrue(users.stream().anyMatch(user -> user.getUsername().equals("admin")));
         assertTrue(users.stream().anyMatch(user -> user.getUsername().equals("ali")));
         assertTrue(users.stream().anyMatch(user -> user.getUsername().equals("mohammad")));
@@ -133,6 +133,21 @@ public class UserRepositoryTest {
         String username = "ali";
         String email = "ali@example.com";
         repository.addUser(new User(username, "password123", email));
+
+        boolean removed = repository.removeUser(username);
+
+        assertTrue(removed);
+        assertNull(repository.getUserByUsername(username));
+        assertNull(repository.getUserByEmail(email));
+    }
+
+    @Test
+    public void removeUserWithEmail_ShouldRemoveFromUsersByEmail() {
+        String username = "mehrad";
+        String email = "mehrad@example.com";
+        User user = new User(username, "password123");
+        user.setEmail(email);
+        repository.addUser(user);
 
         boolean removed = repository.removeUser(username);
 

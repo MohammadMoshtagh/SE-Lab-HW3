@@ -27,7 +27,7 @@ public class UserRepository {
         Map<String, User> combinedUsers = new HashMap<>(usersByUserName);
 
         for (Map.Entry<String, User> entry : usersByEmail.entrySet()) {
-            combinedUsers.putIfAbsent(entry.getKey(), entry.getValue());
+            combinedUsers.putIfAbsent(entry.getValue().getUsername(), entry.getValue());
         }
 
         return new ArrayList<>(combinedUsers.values());
@@ -48,8 +48,11 @@ public class UserRepository {
         if (user.getEmail() != null && usersByEmail.containsKey(user.getEmail())) {
             return false;
         }
+
         usersByUserName.put(user.getUsername(), user);
-        usersByEmail.put(user.getEmail(), user);
+        if (user.getEmail() != null) {
+            usersByEmail.put(user.getEmail(), user);
+        }
         return true;
     }
 
