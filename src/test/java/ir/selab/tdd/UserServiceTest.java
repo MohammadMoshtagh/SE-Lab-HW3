@@ -90,8 +90,14 @@ public class UserServiceTest {
     }
 
     @Test
-    public void changeUserEmailWithInvalidEmail__ShouldFail() {
-        boolean changed = userService.changeUserEmail("mashti@gmail.com", "mashti1@gmail.com");
+    public void changeUserEmailWithInvalidUsername__ShouldFail() {
+        boolean changed = userService.changeUserEmail("mashti", "mashti1@gmail.com");
+        assertFalse(changed);
+    }
+
+    @Test
+    public void changeUserEmailWithoutEmail__ShouldFail() {
+        boolean changed = userService.changeUserEmail("admin", "mashti1@gmail.com");
         assertFalse(changed);
     }
 }
