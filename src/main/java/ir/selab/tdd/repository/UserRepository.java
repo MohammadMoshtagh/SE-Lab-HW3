@@ -25,7 +25,7 @@ public class UserRepository {
     }
 
     public User getUserByEmail(String email) {
-        return new User("username", "123456", "hasti@gmail.com");
+        return usersByEmail.get(email);
     }
 
     public boolean addUser(User user) {
@@ -34,6 +34,7 @@ public class UserRepository {
         }
         // TODO: implement check email duplication
         usersByUserName.put(user.getUsername(), user);
+        usersByEmail.put(user.getEmail(), user);
         return true;
     }
 

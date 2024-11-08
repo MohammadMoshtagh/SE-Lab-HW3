@@ -18,7 +18,7 @@ public class UserServiceTest {
         userService = new UserService(userRepository);
         userService.registerUser("admin", "1234");
         userService.registerUser("ali", "qwert");
-        userService.registerUser("hasti", "1234", "hasti@gmail.com");
+        userService.registerUser("hasti", "123456", "hasti@gmail.com");
     }
 
     @Test
