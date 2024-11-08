@@ -43,8 +43,11 @@ public class UserRepository {
     }
 
     public boolean removeUser(String username) {
-        // TODO: implement
-        return false;
+        if (!usersByUserName.containsKey(username)) {
+            return false;
+        }
+        usersByUserName.remove(username);
+        return true;
     }
 
     public int getUserCount() {

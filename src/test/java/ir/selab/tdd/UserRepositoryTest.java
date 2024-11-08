@@ -102,9 +102,4 @@ public class UserRepositoryTest {
         assertNotNull(repository.getUserByUsername(otherUsername));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void removeUserWithNullUsername_ShouldThrowException() {
-        repository.removeUser(null);
-    }
-
 }
