@@ -128,4 +128,17 @@ public class UserRepositoryTest {
         assertTrue(users.stream().anyMatch(user -> user.getUsername().equals("mohammad")));
     }
 
+    @Test
+    public void removeUser_ShouldRemoveFromBothMaps() {
+        String username = "ali";
+        String email = "ali@example.com";
+        repository.addUser(new User(username, "password123", email));
+
+        boolean removed = repository.removeUser(username);
+
+        assertTrue(removed);
+        assertNull(repository.getUserByUsername(username));
+        assertNull(repository.getUserByEmail(email));
+    }
+
 }
