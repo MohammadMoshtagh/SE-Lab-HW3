@@ -1,5 +1,6 @@
 package ir.selab.tdd;
 
+import ir.selab.tdd.domain.User;
 import ir.selab.tdd.repository.UserRepository;
 import ir.selab.tdd.service.UserService;
 import org.junit.Before;
@@ -100,4 +101,42 @@ public class UserServiceTest {
         boolean changed = userService.changeUserEmail("admin", "mashti1@gmail.com");
         assertFalse(changed);
     }
+
+    @Test
+    public void removeExistingUser_ShouldSucceed() {
+        boolean removed = userService.removeUser("admin");
+        assertTrue(removed);
+
+        List<User> users = userService.getAllUsers();
+        assertFalse(users.stream().anyMatch(user -> user.getUsername().equals("admin")));
+    }
+
+    @Test
+    public void removeNonExistingUser_ShouldFail() {
+        boolean removed = userService.removeUser("nonexistent");
+        assertFalse(removed);
+        assertEquals(4, userService.getAllUsers().size());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void removeUserWithNullUsername_ShouldThrowException() {
+        userService.removeUser(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void removeUserWithEmptyUsername_ShouldFail() {
+        boolean removed = userService.removeUser("");
+        assertFalse(removed);
+        assertEquals(2, userService.getAllUsers().size());
+    }
+
+    @Test
+    public void removeExistingUser_ShouldUpdateUserList() {
+        int initialSize = userService.getAllUsers().size();
+
+        userService.removeUser("admin");
+
+        assertEquals(initialSize - 1, userService.getAllUsers().size());
+    }
+
 }

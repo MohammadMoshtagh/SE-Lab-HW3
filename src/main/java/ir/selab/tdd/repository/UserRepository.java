@@ -2,6 +2,7 @@ package ir.selab.tdd.repository;
 
 import ir.selab.tdd.domain.User;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,16 @@ public class UserRepository {
                 }));
     }
 
+    public List<User> getAllUsers() {
+        Map<String, User> combinedUsers = new HashMap<>(usersByUserName);
+
+        for (Map.Entry<String, User> entry : usersByEmail.entrySet()) {
+            combinedUsers.putIfAbsent(entry.getValue().getUsername(), entry.getValue());
+        }
+
+        return new ArrayList<>(combinedUsers.values());
+    }
+
     public User getUserByUsername(String username) {
         return usersByUserName.get(username);
     }
@@ -37,14 +48,26 @@ public class UserRepository {
         if (user.getEmail() != null && usersByEmail.containsKey(user.getEmail())) {
             return false;
         }
+
         usersByUserName.put(user.getUsername(), user);
-        usersByEmail.put(user.getEmail(), user);
+        if (user.getEmail() != null) {
+            usersByEmail.put(user.getEmail(), user);
+        }
         return true;
     }
 
     public boolean removeUser(String username) {
-        // TODO: implement
-        return false;
+        User user = usersByUserName.remove(username);
+
+        if (user == null) {
+            return false;
+        }
+
+        if (user.getEmail() != null) {
+            usersByEmail.remove(user.getEmail());
+        }
+
+        return true;
     }
 
     public int getUserCount() {

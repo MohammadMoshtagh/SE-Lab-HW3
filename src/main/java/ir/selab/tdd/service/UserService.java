@@ -38,13 +38,14 @@ public class UserService {
     }
 
     public boolean removeUser(String username) {
-        // TODO: implement
-        return false;
+        if (username == null || username.isEmpty()) {
+            throw new IllegalArgumentException("Username cannot be null or empty");
+        }
+        return repository.removeUser(username);
     }
 
     public List<User> getAllUsers() {
-        // TODO: implement
-        return null;
+        return repository.getAllUsers();
     }
 
     public boolean changeUserEmail(String username, String newEmail) {

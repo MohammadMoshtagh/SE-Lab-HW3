@@ -69,4 +69,91 @@ public class UserRepositoryTest {
         boolean isAdded = repository.addUser(user1);
         assertFalse(isAdded);
     }
+
+    @Test
+    public void removeExistingUser_ShouldRemoveFromInternalStorage() {
+        String username = "ali";
+
+        boolean removed = repository.removeUser(username);
+
+        assertTrue(removed);
+        assertNull(repository.getUserByUsername(username));
+    }
+
+    @Test
+    public void removeNonExistingUser_ShouldNotAffectStorage() {
+        String username = "nonexistent";
+        int initialCount = repository.getUserCount();
+
+        boolean removed = repository.removeUser(username);
+
+        assertFalse(removed);
+        assertEquals(initialCount, repository.getUserCount());
+    }
+
+    @Test
+    public void removeExistingUser_ShouldDecreaseUserCount() {
+        String username = "ali";
+        int initialCount = repository.getUserCount();
+
+        boolean removed = repository.removeUser(username);
+
+        assertTrue(removed);
+        assertEquals(initialCount - 1, repository.getUserCount());
+        assertNull(repository.getUserByUsername(username));
+    }
+
+    @Test
+    public void removeUser_ShouldOnlyRemoveSpecifiedUser() {
+        String usernameToRemove = "admin";
+        String otherUsername = "ali";
+        int initialCount = repository.getUserCount();
+
+        boolean removed = repository.removeUser(usernameToRemove);
+
+        assertTrue(removed);
+        assertEquals(initialCount - 1, repository.getUserCount());
+        assertNull(repository.getUserByUsername(usernameToRemove));
+        assertNotNull(repository.getUserByUsername(otherUsername));
+    }
+
+    @Test
+    public void getAllUsers_ShouldReturnAllUniqueUsers() {
+        List<User> users = repository.getAllUsers();
+
+        assertNotNull(users);
+        assertEquals(4, users.size());
+        assertTrue(users.stream().anyMatch(user -> user.getUsername().equals("admin")));
+        assertTrue(users.stream().anyMatch(user -> user.getUsername().equals("ali")));
+        assertTrue(users.stream().anyMatch(user -> user.getUsername().equals("mohammad")));
+    }
+
+    @Test
+    public void removeUser_ShouldRemoveFromBothMaps() {
+        String username = "ali";
+        String email = "ali@example.com";
+        repository.addUser(new User(username, "password123", email));
+
+        boolean removed = repository.removeUser(username);
+
+        assertTrue(removed);
+        assertNull(repository.getUserByUsername(username));
+        assertNull(repository.getUserByEmail(email));
+    }
+
+    @Test
+    public void removeUserWithEmail_ShouldRemoveFromUsersByEmail() {
+        String username = "mehrad";
+        String email = "mehrad@example.com";
+        User user = new User(username, "password123");
+        user.setEmail(email);
+        repository.addUser(user);
+
+        boolean removed = repository.removeUser(username);
+
+        assertTrue(removed);
+        assertNull(repository.getUserByUsername(username));
+        assertNull(repository.getUserByEmail(email));
+    }
+
 }
