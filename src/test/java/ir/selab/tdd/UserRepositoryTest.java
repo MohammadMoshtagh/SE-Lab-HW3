@@ -69,4 +69,42 @@ public class UserRepositoryTest {
         boolean isAdded = repository.addUser(user1);
         assertFalse(isAdded);
     }
+
+    @Test
+    public void removeExistingUser_ShouldRemoveFromInternalStorage() {
+        String username = "ali";
+
+        boolean removed = repository.removeUser(username);
+
+        assertTrue(removed);
+        assertNull(repository.getUserByUsername(username));
+    }
+
+    @Test
+    public void removeNonExistingUser_ShouldNotAffectStorage() {
+        String username = "nonexistent";
+        int initialCount = repository.getUserCount();
+
+        boolean removed = repository.removeUser(username);
+
+        assertFalse(removed);
+        assertEquals(initialCount, repository.getUserCount());
+    }
+
+    @Test
+    public void removeUser_ShouldOnlyRemoveSpecifiedUser() {
+        String usernameToRemove = "admin";
+        String otherUsername = "ali";
+
+        repository.removeUser(usernameToRemove);
+
+        assertNull(repository.getUserByUsername(usernameToRemove));
+        assertNotNull(repository.getUserByUsername(otherUsername));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void removeUserWithNullUsername_ShouldThrowException() {
+        repository.removeUser(null);
+    }
+
 }
