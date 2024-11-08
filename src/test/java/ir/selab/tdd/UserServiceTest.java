@@ -100,4 +100,19 @@ public class UserServiceTest {
         boolean changed = userService.changeUserEmail("admin", "mashti1@gmail.com");
         assertFalse(changed);
     }
+
+    @Test
+    public void removeExistingUser_ShouldSucceed() {
+        boolean removed = userService.removeUser("admin");
+        assertTrue(removed);
+
+        List<User> users = userService.getAllUsers();
+        assertFalse(users.stream().anyMatch(user -> user.getUsername().equals("admin")));
+    }
+
+    @Test
+    public void removeNonExistingUser_ShouldFail() {
+        boolean removed = userService.removeUser("nonexistent");
+        assertFalse(removed);
+    }
 }
