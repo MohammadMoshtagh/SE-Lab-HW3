@@ -30,6 +30,15 @@ public class UserServiceTest {
     }
 
     @Test
+    public void createNewValidUserWithEmail__ShouldSuccess() {
+        String username = "hasti";
+        String password = "123456";
+        String email = "hasti@gmail.com";
+        boolean b = userService.registerUser(username, password, email);
+        assertTrue(b);
+    }
+
+    @Test
     public void createNewDuplicateUser__ShouldFail() {
         String username = "ali";
         String password = "123abc";
@@ -53,5 +62,11 @@ public class UserServiceTest {
     public void loginWithInvalidUsernameAndInvalidPassword__ShouldFail() {
         boolean login = userService.loginWithUsername("ahmad", "abcd");
         assertFalse(login);
+    }
+
+    @Test
+    public void loginWithValidEmailAndPassword__ShouldSuccess() {
+        boolean login = userService.loginWithEmail("hasti@gmail.com", "123456");
+        assertTrue(login);
     }
 }
