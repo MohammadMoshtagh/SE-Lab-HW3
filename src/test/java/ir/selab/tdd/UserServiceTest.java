@@ -115,4 +115,15 @@ public class UserServiceTest {
         boolean removed = userService.removeUser("nonexistent");
         assertFalse(removed);
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void removeUserWithNullUsername_ShouldThrowException() {
+        userService.removeUser(null);
+    }
+
+    @Test
+    public void removeUserWithEmptyUsername_ShouldFail() {
+        boolean removed = userService.removeUser("");
+        assertFalse(removed);
+    }
 }
