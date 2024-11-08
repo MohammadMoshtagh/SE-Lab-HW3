@@ -47,6 +47,13 @@ public class UserRepositoryTest {
     }
 
     @Test
+    public void createRepositoryWithDuplicateEmails__ShouldThrowException() {
+        User user1 = new User("ali1", "1234", "ali@gmail.com");
+        User user2 = new User("ali2", "4567", "ali@gmail.com");
+        assertThrows(IllegalArgumentException.class, () -> new UserRepository(List.of(user1, user2)));
+    }
+
+    @Test
     public void addNewUser__ShouldIncreaseUserCount() {
         int oldUserCount = repository.getUserCount();
 
